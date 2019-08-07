@@ -5,7 +5,9 @@ PowerDNS-Docker
 To run this PowerDNS-Docker stack it's required that you have:
 - 3 Seperate Servers  
 - Docker  
-- Docker-Compose  
+- Docker-Compose
+- Knowledge on Galera
+- Knowledge on PowerDNS  
 - Common Sense  
 
 This PowerDNS-Docker stack uses Galera to replicate PowerDNS records across multiple nameservers, you'll need to install and configure this stack on each server respectively.
