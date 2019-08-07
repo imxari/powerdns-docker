@@ -64,12 +64,6 @@ services:
     build:
       context: ${PWD}/dockerfiles/powerdns-admin/
       dockerfile: Dockerfile
-    labels:
-      - traefik.frontend.rule=Host:pdns.lkeenan.co.uk
-      - traefik.port=9191
-      - traefik.backend=powerdns-admin
-      - traefik.protocol=http
-      - traefik.docker.network=traefiknet
     environment:
        - MARIADB_HOST=$MARIADB_HOST
        - MARIADB_PORT=$MARIADB_PORT
@@ -81,7 +75,6 @@ services:
       - $POWERDNS_ADMIN_PORT:9191
     networks:
       - pdnsnet
-      - traefiknet
     depends_on:
       - mariadb
       - powerdns
@@ -100,7 +93,5 @@ volumes:
   mariadb_data:
 
 networks:
-  traefiknet:
-    external: true
   pdnsnet:
     external: true
