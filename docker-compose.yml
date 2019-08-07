@@ -1,0 +1,106 @@
+version: '2.1'
+
+services:
+  mariadb:
+    restart: always
+    build:
+      context: ${PWD}/dockerfiles/mariadb/
+      dockerfile: Dockerfile
+    hostname: mariadb
+    container_name: $MARIADB_CONTAINER_NAME
+    ports:
+      - 10.10.3.128:3306:3306
+      - 10.10.3.128:4444:4444
+      - 10.10.3.128:4567:4567
+      - 10.10.3.128:4568:4568
+    environment:
+      - MYSQL_ALLOW_EMPTY_PASSWORD=yes
+      - MYSQL_DATABASE=$MARIADB_DATABASE
+      - MYSQL_USER=$MARIADB_USERNAME
+      - MYSQL_PASSWORD=$MARIADB_PASSWORD
+#    command: --wsrep-new-cluster
+    volumes:
+      - mariadb_data:/var/lib/mysql
+    networks:
+      - pdnsnet
+    healthcheck:
+        test: ["CMD", "mysqladmin", "ping", "-h", "localhost"]
+        timeout: 20s
+        retries: 10
+    cap_add:
+      - ALL
+
+  powerdns:
+    restart: always
+    container_name: $PDNS_CONTAINER_NAME
+    hostname: powerdns
+    build:
+      context: ${PWD}/dockerfiles/powerdns/
+      dockerfile: Dockerfile
+    environment:
+      - MARIADB_HOST=$MARIADB_HOST
+      - MARIADB_PORT=$MARIADB_PORT
+      - MARIADB_USER=$MARIADB_USERNAME
+      - MARIADB_PASS=$MARIADB_PASSWORD
+      - MARIADB_DATABASE=$MARIADB_DATABASE
+      - INSTALL_DATABASE=$INSTALL_DATABASE
+    ports:
+      - $PDNS_DNS_PORT:53/udp
+      - $PDNS_API_PORT:8082
+    depends_on:
+      - mariadb
+    networks:
+      - pdnsnet
+    healthcheck:
+      test: ["CMD", "pdns_control", "rping"]
+      timeout: 20s
+      retries: 10
+
+  powerdns-admin:
+    restart: always
+    mem_limit: 256M
+    container_name: $POWERDNS_ADMIN_CONTAINER_NAME
+    hostname: powerdns-admin
+    build:
+      context: ${PWD}/dockerfiles/powerdns-admin/
+      dockerfile: Dockerfile
+    labels:
+      - traefik.frontend.rule=Host:pdns.lkeenan.co.uk
+      - traefik.port=9191
+      - traefik.backend=powerdns-admin
+      - traefik.protocol=http
+      - traefik.docker.network=traefiknet
+    environment:
+       - MARIADB_HOST=$MARIADB_HOST
+       - MARIADB_PORT=$MARIADB_PORT
+       - MARIADB_USER=$MARIADB_USERNAME
+       - MARIADB_PASS=$MARIADB_PASSWORD
+       - MARIADB_DATABASE=$MARIADB_DATABASE
+       - INSTALL_DATABASE=$INSTALL_DATABASE
+    ports:
+      - $POWERDNS_ADMIN_PORT:9191
+    networks:
+      - pdnsnet
+      - traefiknet
+    depends_on:
+      - mariadb
+      - powerdns
+    volumes:
+      - pdns_admin_migrations:/powerdns-admin/migrations
+      - pdns_admin_uploads:/powerdns-admin/uploads
+    healthcheck:
+      test: [ "CMD", "curl", "http://127.0.0.1:9191" ]
+      timeout: 20s
+      retries: 10
+
+volumes:
+  pdns_admin_migrations:
+  pdns_admin_uploads:
+  pdns_admin_saml:
+  mariadb_data:
+
+networks:
+  traefiknet:
+    external: true
+  pdnsnet:
+    external: true

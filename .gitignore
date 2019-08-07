@@ -1,0 +1,9 @@
+# Ignore Let's Encrypt certs
+*.pem
+
+# Ignore logs
+*.log
+# Ignore dns.sql
+dns.sql
+# Ignore .env
+.env
