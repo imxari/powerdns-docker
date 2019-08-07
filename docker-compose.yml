@@ -18,6 +18,10 @@ services:
       - MYSQL_DATABASE=$MARIADB_DATABASE
       - MYSQL_USER=$MARIADB_USERNAME
       - MYSQL_PASSWORD=$MARIADB_PASSWORD
+      - MARIADB_PEERS=$MARIADB_PEERS
+      - MARIADB_CNAME=$MARIADB_CNAME
+      - MARIADB_NADDRESS=$MARIADB_NADDRESS
+      - MARIADB_NNAME=$MARIADB_NNAME
 #    command: --wsrep-new-cluster
     volumes:
       - mariadb_data:/var/lib/mysql
