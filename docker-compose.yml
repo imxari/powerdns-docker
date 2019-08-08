@@ -9,10 +9,10 @@ services:
     hostname: mariadb
     container_name: $MARIADB_CONTAINER_NAME
     ports:
-      - 10.10.3.128:3306:3306
-      - 10.10.3.128:4444:4444
-      - 10.10.3.128:4567:4567
-      - 10.10.3.128:4568:4568
+      - $MARIADB_BADDRESS:3306:3306
+      - $MARIADB_BADDRESS:4444:4444
+      - $MARIADB_BADDRESS:4567:4567
+      - $MARIADB_BADDRESS:4568:4568
     environment:
       - MYSQL_ALLOW_EMPTY_PASSWORD=yes
       - MYSQL_DATABASE=$MARIADB_DATABASE
