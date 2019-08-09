@@ -9,3 +9,6 @@ dns.sql
 .env
 # Ignore docker-compose.override.yml
 docker-compose.override.yml
+
+# Ignore development dockerfile
+dockerfiles/dumpdns
