@@ -1,6 +1,8 @@
 PowerDNS-Docker
 =================
 
+[![Build Status](https://travis-ci.org/h0lysp4nk/powerdns-docker.svg?branch=master)](https://travis-ci.org/h0lysp4nk/powerdns-docker)
+
 ## Requirements
 To run this PowerDNS-Docker stack it's required that you have:
 - 3 Seperate Servers  
