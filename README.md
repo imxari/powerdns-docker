@@ -5,14 +5,14 @@ PowerDNS-Docker
 
 ## Requirements
 To run this PowerDNS-Docker stack it's required that you have:
-- 3 Seperate Servers  
+- 3 Seperate Servers(Recommended)
 - Docker  
 - Docker-Compose
 - Knowledge on Galera
 - Knowledge on PowerDNS  
 - Common Sense  
 
-This PowerDNS-Docker stack uses Galera to replicate PowerDNS records across multiple nameservers, you'll need to install and configure this stack on each server respectively.
+This PowerDNS-Docker stack uses Galera to replicate PowerDNS records across multiple nameservers, you'll need to install and configure this stack on each server respectively. However, there is a compose file for using just a single MariaDB node without Galera please see ```docker-compose.yml.mysql```
 
 ## How to install
 To install this PowerDNS-Docker stack type the following:  
