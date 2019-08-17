@@ -22,8 +22,10 @@ To install this PowerDNS-Docker stack type the following:
 ``` cp .env.template .env ```  
 3. Edit the '.env' file to configure MySQL, Galera, PowerDNS and PowerDNS-Admin:  
 ``` nano .env ```  
-4. Start and build the stack:  
+4. Create the docker network:  
+``` docker network create pdnsnet ```
+5. Start and build the stack:  
 ``` docker-compose up -d --build ```  
-5. Check the stack is healthy(Wait 30 seconds or so after starting):  
+6. Check the stack is healthy(Wait 30 seconds or so after starting):  
 ``` docker-compose ps ```
-6. Done!
+7. Done!
